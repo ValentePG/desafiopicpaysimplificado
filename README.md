@@ -1,5 +1,4 @@
-# desafiopicpaysimplificado
-Desafio pic pay simplificado
+# Desafio pic pay simplificado
 
 # Requisitos
 
@@ -10,4 +9,3 @@ Desafio pic pay simplificado
 <img src="/excalidraw/Fluxo1.png">
 
 <img src="/excalidraw/Fluxo2.png">
-
