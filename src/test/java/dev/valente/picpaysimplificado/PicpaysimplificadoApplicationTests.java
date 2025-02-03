@@ -8,6 +8,7 @@ class PicpaysimplificadoApplicationTests {
 
 	@Test
 	void contextLoads() {
+		System.out.println("teste");
 	}
 
 }
