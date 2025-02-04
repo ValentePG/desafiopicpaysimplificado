@@ -4,9 +4,13 @@ Descrição completa do projeto [aqui](https://github.com/PicPay/picpay-desafio-
 
 # Requisitos
 
-<img src="/excalidraw/requisitos.png">
+<img src="/design/requisitos.png" alt="requisitos">
 
 # Fluxograma simplificado
 
-<img src="/excalidraw/fluxo.png">
+<img src="/design/fluxo.png" alt="fluxograma">
+
+# Possível diagrama de classes
+
+<img src="/design/picpaysimplificado.png" alt="diagrama de classes">
 
