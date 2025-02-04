@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: picpaysimplificado
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/picpaysimplificado?createDatabaseIfNotExist=true
+    password: ${DATA_BASE_PASSWORD:3222}
+    username: ${DATA_BASE_USERNAME:postgres}
