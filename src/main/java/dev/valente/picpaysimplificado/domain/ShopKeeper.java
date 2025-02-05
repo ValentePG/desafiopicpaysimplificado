@@ -3,7 +3,7 @@ package dev.valente.picpaysimplificado.domain;
 import lombok.Data;
 
 @Data
-public class Shopkeeper {
+public class ShopKeeper {
     private long id;
     private String fullName;
     private String cnpj;

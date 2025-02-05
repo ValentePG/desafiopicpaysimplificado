@@ -10,9 +10,9 @@ public class Wallet {
     private long id;
     private BigDecimal balance;
     private WalletType walletType;
-    private List<Transactions> transactions;
+    private List<Transaction> transactions;
 
-    public Wallet(long id, BigDecimal balance, WalletType walletType, List<Transactions> transactions) {
+    public Wallet(long id, BigDecimal balance, WalletType walletType, List<Transaction> transactions) {
         this.id = id;
         this.balance = balance.setScale(2);
         this.walletType = walletType;
