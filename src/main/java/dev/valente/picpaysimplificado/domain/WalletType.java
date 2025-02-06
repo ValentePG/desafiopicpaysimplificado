@@ -14,4 +14,12 @@ public enum WalletType {
     public int getValue() {
         return value;
     }
+
+    public static WalletType convertToWalletType(int walletIntValue) {
+        return switch (walletIntValue) {
+            case 1 -> COMMON_WALLET_TYPE;
+            case 2 -> SHOPKEEPER_WALLET_TYPE;
+            default -> throw new IllegalStateException("Unexpected value: " + walletIntValue);
+        };
+    }
 }
