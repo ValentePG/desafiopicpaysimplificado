@@ -22,13 +22,18 @@ public class WalletRepository {
     }
 
     public void updateWallets(Wallet payeeWallet, Wallet payerWallet) {
-        jdbcClient.sql("UPDATE tbl_wallet SET amount = CASE " +
-                        "WHEN id = ? THEN ?" +
-                        "WHEN id = ? THEN ?")
+        jdbcClient.sql("UPDATE tbl_wallet SET balance = CASE " +
+                        "WHEN id = ? THEN ? " +
+                        "WHEN id = ? THEN ? " +
+                        "ELSE balance " +
+                        "END " +
+                        "WHERE id IN (?,?)")
                 .param(payeeWallet.getId())
                 .param(payeeWallet.getBalance())
                 .param(payerWallet.getId())
                 .param(payerWallet.getBalance())
+                .param(payerWallet.getId())
+                .param(payeeWallet.getId())
                 .update();
     }
 }
