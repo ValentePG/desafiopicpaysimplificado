@@ -23,9 +23,9 @@ public class TransactionRepository {
                 .single();
     }
 
-    public Transaction getTransaction(long transcationId) {
+    public Transaction getTransaction(long transaction) {
         return jdbcClient.sql("SELECT * FROM tbl_transaction WHERE id = ?")
-                .param(transcationId)
+                .param(transaction)
                 .query(Transaction.class)
                 .single();
     }
