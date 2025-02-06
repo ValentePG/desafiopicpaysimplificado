@@ -1,9 +1,10 @@
 package dev.valente.picpaysimplificado.service;
 
 import dev.valente.picpaysimplificado.domain.Transaction;
-import dev.valente.picpaysimplificado.domain.Wallet;
+import dev.valente.picpaysimplificado.domain.WalletType;
 import dev.valente.picpaysimplificado.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,9 +29,10 @@ public class TransactionService {
         var listOfWallets = walletService.getWallets(payeeWalletId, payerWalletId);
         var payeeWallet = listOfWallets.stream().filter(w -> w.getId() == payeeWalletId).findFirst().get();
         var payerWallet = listOfWallets.stream().filter(w -> w.getId() == payerWalletId).findFirst().get();
-        var payeeBalance = payeeWallet.getBalance();
+        var payerBalance = payerWallet.getBalance();
 
-        assertThatBalanceIsGreaterThanAmount(transactionAmount, payeeBalance);
+        checkIfPayerIsShopkeeper(payerWallet.getWalletType());
+        assertThatBalanceIsGreaterThanAmount(transactionAmount, payerBalance);
 
         simulaAutorizacao();
 
@@ -38,12 +40,6 @@ public class TransactionService {
 
         return createTransaction(transaction);
     }
-
-    private void assertThatBalanceIsGreaterThanAmount(BigDecimal amount, BigDecimal balance) {
-        if(amount.compareTo(balance) > 0) throw new RuntimeException();
-    }
-
-    private void simulaAutorizacao(){}
 
     private Transaction createTransaction(Transaction transaction) {
 
@@ -56,4 +52,16 @@ public class TransactionService {
 
         return transactionRepository.saveTransaction(newTransaction);
     }
+
+    private void simulaAutorizacao(){}
+
+    private void assertThatBalanceIsGreaterThanAmount(BigDecimal amount, BigDecimal balance) {
+        if(balance.compareTo(amount) < 0) throw new RuntimeException();
+    }
+
+    private void checkIfPayerIsShopkeeper(WalletType walletType) {
+        if(walletType.getValue() == 2) throw new RuntimeException();
+    }
+
+
 }
