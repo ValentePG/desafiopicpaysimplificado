@@ -12,15 +12,15 @@ public class Transaction {
 
     private int id;
     private BigDecimal amount;
-    private Long payee_wallet_id;
-    private Long payer_wallet_id;
+    private Long payeeWalletId;
+    private Long payerWalletId;
     private OffsetDateTime date;
 
-    public Transaction(int id, BigDecimal amount, Long payee_wallet_id, Long payer_wallet_id, OffsetDateTime date) {
+    public Transaction(int id, BigDecimal amount, Long payeeWalletId, Long payerWalletId, OffsetDateTime date) {
         this.id = id;
         this.amount = amount;
-        this.payee_wallet_id = payee_wallet_id;
-        this.payer_wallet_id = payer_wallet_id;
+        this.payeeWalletId = payeeWalletId;
+        this.payerWalletId = payerWalletId;
         this.date = date;
     }
 }

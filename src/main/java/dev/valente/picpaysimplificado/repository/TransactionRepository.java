@@ -11,14 +11,22 @@ public class TransactionRepository {
 
     private final JdbcClient jdbcClient;
 
-    public void saveTransaction(Transaction transaction) {
-        jdbcClient.sql("""
-                INSERT INTO tbl_transaction (amount, payee_wallet_id, payer_wallet_id, date) VALUES (?, ?, ?, ?)
+    public Transaction saveTransaction(Transaction transaction) {
+        return jdbcClient.sql("""
+        INSERT INTO tbl_transaction (amount, payee_wallet_id, payer_wallet_id, date) VALUES (?, ?, ?, ?) RETURNING *
         """)
                 .param(transaction.getAmount())
-                .param(transaction.getPayee_wallet_id())
-                .param(transaction.getPayer_wallet_id())
+                .param(transaction.getPayeeWalletId())
+                .param(transaction.getPayerWalletId())
                 .param(transaction.getDate())
-                .update();
+                .query(Transaction.class)
+                .single();
+    }
+
+    public Transaction getTransaction(long transcationId) {
+        return jdbcClient.sql("SELECT * FROM tbl_transaction WHERE id = ?")
+                .param(transcationId)
+                .query(Transaction.class)
+                .single();
     }
 }
