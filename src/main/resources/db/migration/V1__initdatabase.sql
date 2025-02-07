@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS tbl_transaction (
                               amount DECIMAL(10,2) NOT NULL,
                               payee_wallet_id BIGINT NOT NULL,
                               payer_wallet_id BIGINT NOT NULL,
-                              date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+                              date TIMESTAMP,
                               CONSTRAINT fk_payee FOREIGN KEY (payee_wallet_id) REFERENCES tbl_wallet(id),
                               CONSTRAINT fk_payer FOREIGN KEY (payer_wallet_id) REFERENCES tbl_wallet(id)
 );
