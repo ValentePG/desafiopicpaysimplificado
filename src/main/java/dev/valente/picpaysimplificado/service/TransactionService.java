@@ -18,6 +18,7 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
 
     private final WalletService walletService;
+    private final AuthorizationService authorizationService;
 
     @Transactional
     public Transaction processTransaction(Transaction transaction) {
@@ -34,7 +35,7 @@ public class TransactionService {
         checkIfPayerIsShopkeeper(payerWallet.getWalletType());
         assertThatBalanceIsGreaterThanAmount(transactionAmount, payerBalance);
 
-        simulaAutorizacao();
+        authorizationService.getAuthorization();
 
         walletService.updateWallets(payeeWallet, payerWallet, transactionAmount);
 
