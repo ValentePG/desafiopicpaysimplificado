@@ -51,8 +51,6 @@ public class TransactionService {
 
         var offsetDatetime = OffsetDateTime.now(ZoneId.of("America/Sao_Paulo"));
 
-        log.info("Date time inicial '{}'", offsetDatetime);
-
         var newTransaction = Transaction.builder()
                 .date(offsetDatetime)
                 .amount(transaction.getAmount())
@@ -65,7 +63,7 @@ public class TransactionService {
 
     private void validateTransaction(Wallet payerWallet, BigDecimal amount) {
         checkIfPayerIsShopkeeper(payerWallet.getWalletType());
-        assertThatBalanceIsGreaterThanAmount(payerWallet.getBalance(), amount);
+        assertThatBalanceIsGreaterThanAmount(amount, payerWallet.getBalance());
         authorizationService.getAuthorization();
     }
 
