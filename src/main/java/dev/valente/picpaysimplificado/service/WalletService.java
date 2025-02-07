@@ -4,7 +4,6 @@ import dev.valente.picpaysimplificado.domain.Wallet;
 import dev.valente.picpaysimplificado.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -18,7 +17,7 @@ public class WalletService {
     private final WalletRepository walletRepository;
 
     public List<Wallet> getWallets(long payeeId, long payerId) {
-        return walletRepository.getWallets(payeeId, payerId);
+        return walletRepository.getWalletsForTransaction(payeeId, payerId);
     }
 
     public void updateWallets(Wallet payeeWallet, Wallet payerWallet, BigDecimal transactionAmount) {
