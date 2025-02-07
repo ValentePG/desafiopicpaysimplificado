@@ -2,9 +2,10 @@ package dev.valente.picpaysimplificado.service;
 
 import dev.valente.picpaysimplificado.domain.Transaction;
 import dev.valente.picpaysimplificado.domain.WalletType;
+import dev.valente.picpaysimplificado.exception.InsufficientBalanceException;
+import dev.valente.picpaysimplificado.exception.WalletTypeNotValidForTransactionException;
 import dev.valente.picpaysimplificado.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +35,6 @@ public class TransactionService {
 
         checkIfPayerIsShopkeeper(payerWallet.getWalletType());
         assertThatBalanceIsGreaterThanAmount(transactionAmount, payerBalance);
-
         authorizationService.getAuthorization();
 
         walletService.updateWallets(payeeWallet, payerWallet, transactionAmount);
@@ -54,15 +54,14 @@ public class TransactionService {
         return transactionRepository.saveTransaction(newTransaction);
     }
 
-    private void simulaAutorizacao(){}
-
     private void assertThatBalanceIsGreaterThanAmount(BigDecimal amount, BigDecimal balance) {
-        if(balance.compareTo(amount) < 0) throw new RuntimeException();
+        if (balance.compareTo(amount) < 0)
+            throw new InsufficientBalanceException("Saldo insuficiente para completar transação");
     }
 
     private void checkIfPayerIsShopkeeper(WalletType walletType) {
-        if(walletType.getValue() == 2) throw new RuntimeException();
+        if (walletType.getValue() == 2)
+            throw new WalletTypeNotValidForTransactionException("Lojistas não podem fazer transações");
     }
-
 
 }
