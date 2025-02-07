@@ -13,12 +13,26 @@ public class WalletRepository {
 
     private final JdbcClient jdbcClient;
 
-    public List<Wallet> getWallets(long payeeId, long payerId) {
+    public List<Wallet> getWalletsForTransaction(long payeeId, long payerId) {
         return jdbcClient.sql("SELECT * FROM tbl_wallet WHERE id IN (?,?)")
                 .param(payeeId)
                 .param(payerId)
                 .query(Wallet.class)
                 .list();
+    }
+
+    public Wallet getWallet(long id) {
+        return jdbcClient.sql("SELECT * FROM tbl_wallet WHERE id = ?")
+                .param(id)
+                .query(Wallet.class)
+                .single();
+    }
+
+    public void updateWallet(Wallet wallet) {
+        jdbcClient.sql("UPDATE tbl_wallet SET balance = ? WHERE id = ?")
+                .param(wallet.getBalance())
+                .param(wallet.getId())
+                .update();
     }
 
     public void updateWallets(Wallet payeeWallet, Wallet payerWallet) {
