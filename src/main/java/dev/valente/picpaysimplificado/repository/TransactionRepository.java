@@ -13,8 +13,8 @@ public class TransactionRepository {
 
     public Transaction saveTransaction(Transaction transaction) {
         return jdbcClient.sql("""
-        INSERT INTO tbl_transaction (amount, payee_wallet_id, payer_wallet_id, date) VALUES (?, ?, ?, ?) RETURNING *
-        """)
+                        INSERT INTO tbl_transaction (amount, payee_wallet_id, payer_wallet_id, date) VALUES (?, ?, ?, ?) RETURNING *
+                        """)
                 .param(transaction.getAmount())
                 .param(transaction.getPayeeWalletId())
                 .param(transaction.getPayerWalletId())

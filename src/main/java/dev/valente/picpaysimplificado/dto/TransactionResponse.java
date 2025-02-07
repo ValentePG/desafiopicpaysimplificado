@@ -8,7 +8,7 @@ import java.math.RoundingMode;
 @Builder
 public record TransactionResponse(long id, long payer, long payee, BigDecimal amount) {
 
-    public TransactionResponse{
+    public TransactionResponse {
         amount = amount.setScale(2, RoundingMode.HALF_UP);
     }
 }
