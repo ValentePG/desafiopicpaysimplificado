@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
