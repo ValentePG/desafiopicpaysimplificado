@@ -6,12 +6,15 @@ import dev.valente.picpaysimplificado.exception.InsufficientBalanceException;
 import dev.valente.picpaysimplificado.exception.WalletTypeNotValidForTransactionException;
 import dev.valente.picpaysimplificado.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TransactionService {
@@ -44,8 +47,12 @@ public class TransactionService {
 
     private Transaction createTransaction(Transaction transaction) {
 
+        var offsetDatetime = OffsetDateTime.now(ZoneId.of("America/Sao_Paulo"));
+
+        log.info("Date time inicial '{}'", offsetDatetime);
+
         var newTransaction = Transaction.builder()
-                .date(OffsetDateTime.now())
+                .date(offsetDatetime)
                 .amount(transaction.getAmount())
                 .payeeWalletId(transaction.getPayeeWalletId())
                 .payerWalletId(transaction.getPayerWalletId())
