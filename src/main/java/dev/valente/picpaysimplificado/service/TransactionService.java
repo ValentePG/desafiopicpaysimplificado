@@ -1,6 +1,7 @@
 package dev.valente.picpaysimplificado.service;
 
 import dev.valente.picpaysimplificado.domain.Transaction;
+import dev.valente.picpaysimplificado.domain.Wallet;
 import dev.valente.picpaysimplificado.domain.WalletType;
 import dev.valente.picpaysimplificado.exception.InsufficientBalanceException;
 import dev.valente.picpaysimplificado.exception.WalletTypeNotValidForTransactionException;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -31,14 +33,14 @@ public class TransactionService {
         var payeeWalletId = transaction.getPayeeWalletId();
         var transactionAmount = transaction.getAmount();
 
-        var listOfWallets = walletService.getWallets(payeeWalletId, payerWalletId);
-        var payeeWallet = listOfWallets.stream().filter(w -> w.getId() == payeeWalletId).findFirst().get();
-        var payerWallet = listOfWallets.stream().filter(w -> w.getId() == payerWalletId).findFirst().get();
-        var payerBalance = payerWallet.getBalance();
+        var wallets = walletService.getWallets(payeeWalletId, payerWalletId)
+                .stream()
+                .collect(Collectors.toMap(Wallet::getId, wallet -> wallet));
 
-        checkIfPayerIsShopkeeper(payerWallet.getWalletType());
-        assertThatBalanceIsGreaterThanAmount(transactionAmount, payerBalance);
-        authorizationService.getAuthorization();
+        var payeeWallet = wallets.get(payeeWalletId);
+        var payerWallet = wallets.get(payerWalletId);
+
+        validateTransaction(payerWallet, transactionAmount);
 
         walletService.updateWallets(payeeWallet, payerWallet, transactionAmount);
 
@@ -59,6 +61,12 @@ public class TransactionService {
                 .build();
 
         return transactionRepository.saveTransaction(newTransaction);
+    }
+
+    private void validateTransaction(Wallet payerWallet, BigDecimal amount) {
+        checkIfPayerIsShopkeeper(payerWallet.getWalletType());
+        assertThatBalanceIsGreaterThanAmount(payerWallet.getBalance(), amount);
+        authorizationService.getAuthorization();
     }
 
     private void assertThatBalanceIsGreaterThanAmount(BigDecimal amount, BigDecimal balance) {
