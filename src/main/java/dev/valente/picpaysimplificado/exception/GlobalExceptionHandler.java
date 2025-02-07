@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleInsufficientBalanceException(InsufficientBalanceException ex,
                                                                        HttpServletRequest request) {
         var apiError = ApiError.builder()
-                .timestamp(OffsetDateTime.now())
+                .timestamp(OffsetDateTime.now(ZoneId.of("America/Sao_Paulo")))
                 .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
                 .message(ex.getReason())
                 .path(request.getRequestURI())
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleWalletTypeNotValidForTransactionException(WalletTypeNotValidForTransactionException ex,
                                                                                     HttpServletRequest request) {
         var apiError = ApiError.builder()
-                .timestamp(OffsetDateTime.now())
+                .timestamp(OffsetDateTime.now(ZoneId.of("America/Sao_Paulo")))
                 .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
                 .message(ex.getReason())
                 .path(request.getRequestURI())
@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleNotAuthorizedException(NotAuthorizedException ex,
                                                                  HttpServletRequest request) {
         var apiError = ApiError.builder()
-                .timestamp(OffsetDateTime.now())
+                .timestamp(OffsetDateTime.now(ZoneId.of("America/Sao_Paulo")))
                 .error(HttpStatus.FORBIDDEN.getReasonPhrase())
                 .message(ex.getReason())
                 .path(request.getRequestURI())
