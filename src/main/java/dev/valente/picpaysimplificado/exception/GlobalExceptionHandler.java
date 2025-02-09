@@ -40,6 +40,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
 
+    @ExceptionHandler(InconsistencyError.class)
+    public ResponseEntity<ApiError> handleInconsistentError(InconsistencyError ex,
+                                                                                    HttpServletRequest request) {
+        var apiError = ApiError.builder()
+                .timestamp(OffsetDateTime.now(ZoneId.of("America/Sao_Paulo")))
+                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .message(ex.getReason())
+                .path(request.getRequestURI())
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+    }
+
     @ExceptionHandler(NotAuthorizedException.class)
     public ResponseEntity<ApiError> handleNotAuthorizedException(NotAuthorizedException ex,
                                                                  HttpServletRequest request) {
