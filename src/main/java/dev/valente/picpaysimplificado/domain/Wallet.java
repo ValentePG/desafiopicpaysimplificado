@@ -10,6 +10,7 @@ public class Wallet {
     private long id;
     private BigDecimal balance;
     private WalletType walletType;
+    private int version;
 
     public Wallet(long id, BigDecimal balance, int wallet_type) {
         this.id = id;
