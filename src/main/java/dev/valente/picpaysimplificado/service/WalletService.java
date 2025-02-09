@@ -27,13 +27,15 @@ public class WalletService {
 
         payeeWallet.setBalance(newBalanceForPayee);
         payerWallet.setBalance(newBalanceForPayer);
+        updateWallet(payeeWallet);
+        updateWallet(payerWallet);
 
-        var rowsAffectedPayer = walletRepository.updateWallet(payerWallet);
-        if(rowsAffectedPayer == 0) throw new InconsistencyError("Ocorreu um erro de inconsistência na transação payer");
-        payerWallet.setVersion(payerWallet.getVersion() + 1);
+    }
 
-        var rowsAffectedPayee = walletRepository.updateWallet(payeeWallet);
-        if(rowsAffectedPayee == 0 ) throw new InconsistencyError("Ocorreu um erro de inconsistência na transação payee");
-        payeeWallet.setVersion(payeeWallet.getVersion() + 1);
+    private void updateWallet(Wallet wallet) {
+        var rowsAffected = walletRepository.updateWallet(wallet);
+        if(rowsAffected == 0) throw new InconsistencyError("Erro de inconsistência na transação. Wallet ID: "
+                + wallet.getId());
+        wallet.setVersion(wallet.getVersion() + 1);
     }
 }
