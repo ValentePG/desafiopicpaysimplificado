@@ -1,0 +1,1 @@
+ALTER TABLE tbl_wallet ADD COLUMN version INT DEFAULT 0;
