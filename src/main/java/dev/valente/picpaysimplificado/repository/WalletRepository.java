@@ -28,15 +28,16 @@ public class WalletRepository {
                 .single();
     }
 
-    public void updateWallet(Wallet wallet) {
-        jdbcClient.sql("UPDATE tbl_wallet SET balance = ? WHERE id = ?")
+    public int updateWallet(Wallet wallet) {
+        return jdbcClient.sql("UPDATE tbl_wallet SET balance = ?, version = version + 1 WHERE id = ? AND version = ?")
                 .param(wallet.getBalance())
                 .param(wallet.getId())
+                .param(wallet.getVersion())
                 .update();
     }
 
-    public void updateWallets(Wallet payeeWallet, Wallet payerWallet) {
-        jdbcClient.sql("UPDATE tbl_wallet SET balance = CASE " +
+    public int updateWallets(Wallet payeeWallet, Wallet payerWallet) {
+        return jdbcClient.sql("UPDATE tbl_wallet SET balance = CASE " +
                         "WHEN id = ? THEN ? " +
                         "WHEN id = ? THEN ? " +
                         "ELSE balance " +
