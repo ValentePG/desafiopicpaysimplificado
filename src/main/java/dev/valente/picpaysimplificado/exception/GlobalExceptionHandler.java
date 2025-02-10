@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -16,13 +15,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleInsufficientBalanceException(InsufficientBalanceException ex,
                                                                        HttpServletRequest request) {
         var apiError = ApiError.builder()
-                .timestamp(OffsetDateTime.now(ZoneId.of("America/Sao_Paulo")))
+                .timestamp(OffsetDateTime.now())
                 .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
                 .message(ex.getReason())
                 .path(request.getRequestURI())
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .build();
-
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
 
@@ -30,27 +28,25 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleWalletTypeNotValidForTransactionException(WalletTypeNotValidForTransactionException ex,
                                                                                     HttpServletRequest request) {
         var apiError = ApiError.builder()
-                .timestamp(OffsetDateTime.now(ZoneId.of("America/Sao_Paulo")))
+                .timestamp(OffsetDateTime.now())
                 .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
                 .message(ex.getReason())
                 .path(request.getRequestURI())
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .build();
-
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
 
-    @ExceptionHandler(InconsistencyError.class)
-    public ResponseEntity<ApiError> handleInconsistentError(InconsistencyError ex,
-                                                                                    HttpServletRequest request) {
+    @ExceptionHandler(InconsistencyException.class)
+    public ResponseEntity<ApiError> handleInconsistentException(InconsistencyException ex,
+                                                                HttpServletRequest request) {
         var apiError = ApiError.builder()
-                .timestamp(OffsetDateTime.now(ZoneId.of("America/Sao_Paulo")))
+                .timestamp(OffsetDateTime.now())
                 .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
                 .message(ex.getReason())
                 .path(request.getRequestURI())
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .build();
-
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
 
@@ -58,13 +54,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleNotAuthorizedException(NotAuthorizedException ex,
                                                                  HttpServletRequest request) {
         var apiError = ApiError.builder()
-                .timestamp(OffsetDateTime.now(ZoneId.of("America/Sao_Paulo")))
+                .timestamp(OffsetDateTime.now())
                 .error(HttpStatus.FORBIDDEN.getReasonPhrase())
                 .message(ex.getReason())
                 .path(request.getRequestURI())
                 .statusCode(HttpStatus.FORBIDDEN.value())
                 .build();
-
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(apiError);
     }
 }
