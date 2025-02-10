@@ -62,4 +62,17 @@ public class GlobalExceptionHandler {
                 .build();
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(apiError);
     }
+
+    @ExceptionHandler(UnnavailableServiceException.class)
+    public ResponseEntity<ApiError> handleUnnavailableService(UnnavailableServiceException ex,
+                                                              HttpServletRequest request) {
+        var apiError = ApiError.builder()
+                .timestamp(OffsetDateTime.now())
+                .error(HttpStatus.GATEWAY_TIMEOUT.getReasonPhrase())
+                .message(ex.getMessage())
+                .path(request.getRequestURI())
+                .statusCode(HttpStatus.GATEWAY_TIMEOUT.value())
+                .build();
+        return ResponseEntity.status(HttpStatus.GATEWAY_TIMEOUT).body(apiError);
+    }
 }
