@@ -3,7 +3,7 @@ package dev.valente.picpaysimplificado.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.valente.picpaysimplificado.dto.Authorization;
 import dev.valente.picpaysimplificado.exception.NotAuthorizedException;
-import dev.valente.picpaysimplificado.web.config.WebProperties;
+import dev.valente.picpaysimplificado.config.WebProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatusCode;
@@ -30,8 +30,8 @@ public class AuthorizationService {
                     var jsonMapped = objectMapper.readValue(jsonResponse, Authorization.class);
                     throw new NotAuthorizedException(jsonMapped.toString());
                 }))
-                .body(Authorization.class);
+                .toEntity(Authorization.class);
 
-        log.info("Authorization httpResponse: {}", response);
+        log.info("Transação autorizada: {}", response.getBody());
     }
 }
