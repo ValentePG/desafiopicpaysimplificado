@@ -25,6 +25,7 @@ public class TransactionService {
 
     private final WalletService walletService;
     private final AuthorizationService authorizationService;
+    private final NotifyService notifyService;
 
     @Transactional
     public Transaction processTransaction(Transaction transaction) {
@@ -44,12 +45,16 @@ public class TransactionService {
 
         walletService.updateWallets(payeeWallet, payerWallet, transactionAmount);
 
-        return createTransaction(transaction);
+        var transactionSuccess = createTransaction(transaction);
+
+        notifyService.notify(transactionSuccess);
+
+        return transactionSuccess;
     }
 
     private Transaction createTransaction(Transaction transaction) {
 
-        var offsetDatetime = OffsetDateTime.now(ZoneId.of("America/Sao_Paulo"));
+        var offsetDatetime = OffsetDateTime.now();
 
         var newTransaction = Transaction.builder()
                 .date(offsetDatetime)
