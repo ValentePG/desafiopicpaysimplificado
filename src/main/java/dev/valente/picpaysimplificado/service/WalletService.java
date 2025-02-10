@@ -1,7 +1,7 @@
 package dev.valente.picpaysimplificado.service;
 
 import dev.valente.picpaysimplificado.domain.Wallet;
-import dev.valente.picpaysimplificado.exception.InconsistencyError;
+import dev.valente.picpaysimplificado.exception.InconsistencyException;
 import dev.valente.picpaysimplificado.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -34,7 +34,7 @@ public class WalletService {
 
     private void updateWallet(Wallet wallet) {
         var rowsAffected = walletRepository.updateWallet(wallet);
-        if(rowsAffected == 0) throw new InconsistencyError("Erro de inconsistência na transação. Wallet ID: "
+        if(rowsAffected == 0) throw new InconsistencyException("Erro de inconsistência na transação. Wallet ID: "
                 + wallet.getId());
         wallet.setVersion(wallet.getVersion() + 1);
     }
