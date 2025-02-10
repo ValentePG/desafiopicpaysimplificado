@@ -2,14 +2,17 @@ package dev.valente.picpaysimplificado.domain;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.OffsetDateTime;
 
 @Data
+@NoArgsConstructor
 @Builder
-public class Transaction {
+public class Transaction implements Serializable {
 
     private long id;
     private BigDecimal amount;
