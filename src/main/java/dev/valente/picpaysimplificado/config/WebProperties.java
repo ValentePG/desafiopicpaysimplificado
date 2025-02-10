@@ -1,4 +1,4 @@
-package dev.valente.picpaysimplificado.web.config;
+package dev.valente.picpaysimplificado.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
