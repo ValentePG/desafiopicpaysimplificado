@@ -1,9 +1,9 @@
 package dev.valente.picpaysimplificado.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.valente.picpaysimplificado.config.WebProperties;
 import dev.valente.picpaysimplificado.dto.Authorization;
 import dev.valente.picpaysimplificado.exception.NotAuthorizedException;
-import dev.valente.picpaysimplificado.config.WebProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatusCode;

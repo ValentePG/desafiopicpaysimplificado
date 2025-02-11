@@ -34,7 +34,7 @@ public class WalletService {
 
     private void updateWallet(Wallet wallet) {
         var rowsAffected = walletRepository.updateWallet(wallet);
-        if(rowsAffected == 0) throw new InconsistencyException("Erro de inconsistência na transação. Wallet ID: "
+        if (rowsAffected == 0) throw new InconsistencyException("Erro de inconsistência na transação. Wallet ID: "
                 + wallet.getId());
         wallet.setVersion(wallet.getVersion() + 1);
     }
