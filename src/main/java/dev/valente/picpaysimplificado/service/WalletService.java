@@ -2,6 +2,7 @@ package dev.valente.picpaysimplificado.service;
 
 import dev.valente.picpaysimplificado.domain.Wallet;
 import dev.valente.picpaysimplificado.exception.InconsistencyException;
+import dev.valente.picpaysimplificado.exception.WalletNotFoundException;
 import dev.valente.picpaysimplificado.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Log4j2
 @Service
 @RequiredArgsConstructor
 public class WalletService {
@@ -18,7 +18,11 @@ public class WalletService {
     private final WalletRepository walletRepository;
 
     public List<Wallet> getWallets(long payeeId, long payerId) {
-        return walletRepository.getWalletsForTransaction(payeeId, payerId);
+
+        var payeeWallet = assertThatWalletExist(payeeId);
+        var payerWallet = assertThatWalletExist(payerId);
+
+        return List.of(payeeWallet, payerWallet);
     }
 
     public void updateWallets(Wallet payeeWallet, Wallet payerWallet, BigDecimal transactionAmount) {
@@ -27,6 +31,7 @@ public class WalletService {
 
         payeeWallet.setBalance(newBalanceForPayee);
         payerWallet.setBalance(newBalanceForPayer);
+
         updateWallet(payeeWallet);
         updateWallet(payerWallet);
 
@@ -37,5 +42,10 @@ public class WalletService {
         if (rowsAffected == 0) throw new InconsistencyException("Erro de inconsistência na transação. Wallet ID: "
                 + wallet.getId());
         wallet.setVersion(wallet.getVersion() + 1);
+    }
+
+    private Wallet assertThatWalletExist(long walletId) {
+        return walletRepository.getWallet(walletId)
+                .orElseThrow(() -> new WalletNotFoundException("Wallet id: %s não existe".formatted(walletId)));
     }
 }
