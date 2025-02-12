@@ -1,8 +1,11 @@
 package dev.valente.picpaysimplificado.domain;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Common {
     private long id;
     private String fullName;

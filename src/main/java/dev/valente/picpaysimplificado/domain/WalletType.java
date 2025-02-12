@@ -1,5 +1,8 @@
 package dev.valente.picpaysimplificado.domain;
 
+import lombok.Getter;
+
+@Getter
 public enum WalletType {
 
     COMMON_WALLET_TYPE(1),
@@ -9,10 +12,6 @@ public enum WalletType {
 
     WalletType(int value) {
         this.value = value;
-    }
-
-    public int getValue() {
-        return value;
     }
 
     public static WalletType convertToWalletType(int walletIntValue) {

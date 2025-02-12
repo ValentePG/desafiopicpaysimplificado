@@ -1,11 +1,15 @@
 package dev.valente.picpaysimplificado.domain;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-@Data
+@Getter
+@Setter
+@ToString
 public class Wallet {
     private long id;
     private BigDecimal balance;
