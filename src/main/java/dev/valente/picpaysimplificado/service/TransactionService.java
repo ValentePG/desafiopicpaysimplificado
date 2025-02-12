@@ -7,7 +7,7 @@ import dev.valente.picpaysimplificado.exception.InsufficientBalanceException;
 import dev.valente.picpaysimplificado.exception.WalletTypeNotValidForTransactionException;
 import dev.valente.picpaysimplificado.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.stream.Collectors;
 
-@Slf4j
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class TransactionService {
@@ -42,9 +42,13 @@ public class TransactionService {
 
         validateTransaction(payerWallet, transactionAmount);
 
+        log.info("Iniciando transação para wallets: Pagador '{}' e Recebedor'{}', com valor '{}'",
+                payerWalletId, payeeWallet, transactionAmount);
+
         walletService.updateWallets(payeeWallet, payerWallet, transactionAmount);
 
         var transactionSuccess = createTransaction(transaction);
+        log.info("Transação completada com sucesso '{}'", transactionSuccess);
 
         notifyService.notify(transactionSuccess);
 
