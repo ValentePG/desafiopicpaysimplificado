@@ -32,3 +32,5 @@ build/
 ### VS Code ###
 .vscode/
 /.env
+/src/main/resources/static/rapido.sql
+/src/main/java/dev/valente/picpaysimplificado/commandlinerunner/TestLineRunner.java
