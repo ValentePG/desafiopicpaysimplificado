@@ -17,12 +17,12 @@ public class RabbitMqConfig {
     public Declarables declarables() {
         Queue directExchangeQueue = new Queue("direct_queue", false);
 
-        DirectExchange directExchange = new DirectExchange("testeexchange");
+        DirectExchange directExchange = new DirectExchange("direct_exchange");
 
         return new Declarables(directExchangeQueue, directExchange,
                 BindingBuilder
                         .bind(directExchangeQueue)
-                        .to(directExchange).with("testeroutingkey"));
+                        .to(directExchange).with("direct_routingKey"));
     }
 
     @Bean

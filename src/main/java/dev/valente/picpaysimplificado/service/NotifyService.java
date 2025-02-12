@@ -12,6 +12,6 @@ public class NotifyService {
     private final RabbitTemplate rabbitTemplate;
 
     public void notify(Transaction transaction) {
-        rabbitTemplate.convertAndSend("testeexchange", "testeroutingkey", transaction);
+        rabbitTemplate.convertAndSend("direct_exchange", "direct_routingKey", transaction);
     }
 }
