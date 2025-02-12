@@ -6,6 +6,7 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ShopKeeper {
     private long id;
     private String fullName;

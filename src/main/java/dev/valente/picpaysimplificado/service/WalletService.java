@@ -5,7 +5,6 @@ import dev.valente.picpaysimplificado.exception.InconsistencyException;
 import dev.valente.picpaysimplificado.exception.WalletNotFoundException;
 import dev.valente.picpaysimplificado.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -17,7 +16,7 @@ public class WalletService {
 
     private final WalletRepository walletRepository;
 
-    public List<Wallet> getWallets(long payeeId, long payerId) {
+    public List<Wallet> getWalletsForTransaction(long payeeId, long payerId) {
 
         var payeeWallet = assertThatWalletExist(payeeId);
         var payerWallet = assertThatWalletExist(payerId);

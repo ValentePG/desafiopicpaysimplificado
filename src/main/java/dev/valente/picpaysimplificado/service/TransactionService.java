@@ -33,7 +33,7 @@ public class TransactionService {
         var payeeWalletId = transaction.getPayeeWalletId();
         var transactionAmount = transaction.getAmount();
 
-        var wallets = walletService.getWallets(payeeWalletId, payerWalletId)
+        var wallets = walletService.getWalletsForTransaction(payeeWalletId, payerWalletId)
                 .stream()
                 .collect(Collectors.toMap(Wallet::getId, wallet -> wallet));
 
@@ -43,7 +43,7 @@ public class TransactionService {
         validateTransaction(payerWallet, transactionAmount);
 
         log.info("Iniciando transação para wallets: Pagador '{}' e Recebedor'{}', com valor '{}'",
-                payerWalletId, payeeWallet, transactionAmount);
+                payerWallet, payeeWallet, transactionAmount);
 
         walletService.updateWallets(payeeWallet, payerWallet, transactionAmount);
 
