@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -13,19 +14,11 @@ public class WalletRepository {
 
     private final JdbcClient jdbcClient;
 
-    public List<Wallet> getWalletsForTransaction(long payeeId, long payerId) {
-        return jdbcClient.sql("SELECT * FROM tbl_wallet WHERE id IN (?,?)")
-                .param(payeeId)
-                .param(payerId)
-                .query(Wallet.class)
-                .list();
-    }
-
-    public Wallet getWallet(long id) {
+    public Optional<Wallet> getWallet(long id) {
         return jdbcClient.sql("SELECT * FROM tbl_wallet WHERE id = ?")
                 .param(id)
                 .query(Wallet.class)
-                .single();
+                .optional();
     }
 
     public int updateWallet(Wallet wallet) {
