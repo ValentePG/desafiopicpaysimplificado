@@ -78,8 +78,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NotAuthorizedException.class)
-    public ResponseEntity<ApiError> handleNotAuthorizedException(NotAuthorizedException ex,
-                                                                 HttpServletRequest request) {
+    public ResponseEntity<ApiError> handleWalletNotFoundException(NotAuthorizedException ex,
+                                                                  HttpServletRequest request) {
         var apiError = ApiError.builder()
                 .timestamp(OffsetDateTime.now())
                 .error(HttpStatus.FORBIDDEN.getReasonPhrase())
@@ -88,6 +88,19 @@ public class GlobalExceptionHandler {
                 .statusCode(HttpStatus.FORBIDDEN.value())
                 .build();
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(apiError);
+    }
+
+    @ExceptionHandler(WalletNotFoundException.class)
+    public ResponseEntity<ApiError> handleWalletNotFoundException(WalletNotFoundException ex,
+                                                                  HttpServletRequest request) {
+        var apiError = ApiError.builder()
+                .timestamp(OffsetDateTime.now())
+                .error(HttpStatus.NOT_FOUND.getReasonPhrase())
+                .message(ex.getReason())
+                .path(request.getRequestURI())
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
     }
 
     @ExceptionHandler(UnnavailableServiceException.class)
