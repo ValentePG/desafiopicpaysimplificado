@@ -1,3 +1,4 @@
 spring:
-  datasource:
-    username: abadaba
+  flyway:
+    enabled: false
+    locations: classpath:db/migration-test
