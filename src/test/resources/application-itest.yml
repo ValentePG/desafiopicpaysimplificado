@@ -1,0 +1,21 @@
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 1000ms
+          multiplier: 2
+          max-attempts: 5
+          max-interval: 10000ms
+        concurrency: 3
+        max-concurrency: 10
+
+web:
+  authorization-uri: /v2/authorize
+  notify-uri: /v1/notify
+  url: https://util.devi.tools/api
