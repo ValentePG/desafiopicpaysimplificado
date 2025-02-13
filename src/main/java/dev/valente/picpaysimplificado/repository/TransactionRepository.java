@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class TransactionRepository {
@@ -28,5 +30,11 @@ public class TransactionRepository {
                 .param(transaction)
                 .query(Transaction.class)
                 .single();
+    }
+
+    public List<Transaction> getAllTransactions() {
+        return jdbcClient.sql("SELECT * FROM tbl_transaction")
+                .query(Transaction.class)
+                .list();
     }
 }
