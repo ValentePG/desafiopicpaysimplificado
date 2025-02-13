@@ -1,0 +1,1 @@
+{"timestamp":"2025-02-13T19:08:26.806472-03:00","statusCode":403,"error":"Forbidden","message":"Authorization[status=fail, data=Data[authorization=false]]","path":"/v1/transfer"}
