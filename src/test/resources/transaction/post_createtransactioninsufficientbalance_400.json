@@ -1,0 +1,1 @@
+{"timestamp":"2025-02-14T10:04:49.9995197-03:00","statusCode":400,"error":"Bad Request","message":"Saldo insuficiente para completar transação","path":"/v1/transfer"}
