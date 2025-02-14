@@ -78,8 +78,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NotAuthorizedException.class)
-    public ResponseEntity<ApiError> handleWalletNotFoundException(NotAuthorizedException ex,
-                                                                  HttpServletRequest request) {
+    public ResponseEntity<ApiError> handleNotAuthorizedException(NotAuthorizedException ex,
+                                                                 HttpServletRequest request) {
         var apiError = ApiError.builder()
                 .timestamp(OffsetDateTime.now())
                 .error(HttpStatus.FORBIDDEN.getReasonPhrase())
