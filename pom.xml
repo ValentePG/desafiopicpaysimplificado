@@ -18,6 +18,11 @@
 		<java.version>21</java.version>
 		<maven-failsafe-plugin.version>3.5.2</maven-failsafe-plugin.version>
 		<spring-cloud-dependencies.version>2024.0.0</spring-cloud-dependencies.version>
+		<jib-maven-plugin.version>3.3.2</jib-maven-plugin.version>
+		<jib-maven-plugin.image>eclipse-temurin:21-jre</jib-maven-plugin.image>
+		<docker.repo.url>valentedev</docker.repo.url>
+		<docker.repo.project>picpaysimplificado</docker.repo.project>
+		<docker.image.name>valentedev/picpaysimplificado</docker.image.name>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -33,27 +38,16 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310 -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
 			<version>2.18.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.github.gavlyukovskiy</groupId>
-			<artifactId>datasource-proxy-spring-boot-starter</artifactId>
-			<version>1.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.flywaydb</groupId>
@@ -108,22 +102,18 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
 		<dependency>
 			<groupId>io.rest-assured</groupId>
 			<artifactId>rest-assured</artifactId>
 			<version>5.5.0</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.awaitility/awaitility -->
 		<dependency>
 			<groupId>org.awaitility</groupId>
 			<artifactId>awaitility</artifactId>
 			<version>4.2.2</version>
 			<scope>test</scope>
 		</dependency>
-
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -191,6 +181,33 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>${jib-maven-plugin.version}</version>
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<phase>package</phase>-->
+<!--						<goals>-->
+<!--							<goal>build</goal>-->
+<!--						</goals>-->
+<!--					</execution>-->
+<!--				</executions>-->
+				<configuration>
+					<from>
+						<image>${jib-maven-plugin.image}</image>
+					</from>
+					<to>
+						<image>${docker.image.name}</image>
+						<tags>
+							<tag>${project.version}</tag>
+						</tags>
+					</to>
+					<container>
+						<format>OCI</format>
+					</container>
 				</configuration>
 			</plugin>
 		</plugins>
