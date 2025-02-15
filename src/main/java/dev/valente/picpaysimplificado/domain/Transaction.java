@@ -17,6 +17,7 @@ public class Transaction implements Serializable {
     private BigDecimal amount;
     private Long payeeWalletId;
     private Long payerWalletId;
+    @Setter
     private OffsetDateTime date;
 
     public Transaction(long id, BigDecimal amount, Long payeeWalletId, Long payerWalletId, OffsetDateTime date) {
