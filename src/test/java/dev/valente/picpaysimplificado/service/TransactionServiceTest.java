@@ -1,7 +1,9 @@
 package dev.valente.picpaysimplificado.service;
 
 import dev.valente.picpaysimplificado.domain.Transaction;
+import dev.valente.picpaysimplificado.exception.InsufficientBalanceException;
 import dev.valente.picpaysimplificado.exception.NotAuthorizedException;
+import dev.valente.picpaysimplificado.exception.WalletTypeNotValidForTransactionException;
 import dev.valente.picpaysimplificado.repository.TransactionRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
@@ -73,4 +75,33 @@ class TransactionServiceTest {
                 .isInstanceOf(NotAuthorizedException.class);
     }
 
+    @Test
+    @Order(3)
+    @DisplayName("Should throw InsufficientBalanceException when balance is less than the value of transfer")
+    void processTransaction_ShouldReturnInsufficientBalanceException_WhenBalanceIsLessThanTheValueOfTransfer() {
+
+        BDDMockito.when(walletService.getWalletsForTransaction(INITIAL_TRANSACTION.getPayeeWalletId(),
+                INITIAL_TRANSACTION.getPayerWalletId())).thenReturn(LIST_OF_WALLETS_WITH_INSUFFICIENT_BALANCE);
+
+        Assertions.assertThatException()
+                .isThrownBy(() -> transactionService.processTransaction(INITIAL_TRANSACTION))
+                .withMessage("400 BAD_REQUEST \"Saldo insuficiente para completar transação\"")
+                .isInstanceOf(InsufficientBalanceException.class);
+
+    }
+
+    @Test
+    @Order(4)
+    @DisplayName("Should throw WalletTypeNotValidForTransaction when walletType is ShopKeeper")
+    void processTransaction_ShouldReturnWalletTypeNotValidForTransaction_whenWalletTypeIsShopKeeper() {
+
+        BDDMockito.when(walletService.getWalletsForTransaction(INITIAL_TRANSACTION.getPayeeWalletId(),
+                INITIAL_TRANSACTION.getPayerWalletId())).thenReturn(LIST_OF_WALLETS_WITH_PAYER_SHOPKEEPER);
+
+        Assertions.assertThatException()
+                .isThrownBy(() -> transactionService.processTransaction(INITIAL_TRANSACTION))
+                .withMessage("400 BAD_REQUEST \"Lojistas não podem fazer transações\"")
+                .isInstanceOf(WalletTypeNotValidForTransactionException.class);
+
+    }
 }

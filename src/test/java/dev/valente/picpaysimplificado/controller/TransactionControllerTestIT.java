@@ -3,6 +3,7 @@ package dev.valente.picpaysimplificado.controller;
 import dev.valente.picpaysimplificado.config.RestAssuredConfig;
 import dev.valente.picpaysimplificado.config.TestContainers;
 import dev.valente.picpaysimplificado.domain.Transaction;
+import dev.valente.picpaysimplificado.exception.InsufficientBalanceException;
 import dev.valente.picpaysimplificado.exception.NotAuthorizedException;
 import dev.valente.picpaysimplificado.repository.TransactionRepository;
 import dev.valente.picpaysimplificado.service.AuthorizationService;
@@ -174,4 +175,58 @@ class TransactionControllerTestIT extends TestContainers {
                 Arguments.of(request3, response3)
         );
     }
+
+    @Test
+    @Order(4)
+    @Sql(value = "/sql/initthreewallets.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "/sql/dropdata.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @DisplayName("POST v1/transfer Should return Bad request when balance is less than the value of transfer")
+    void createTransaction_ShouldReturnBadRequest_WhenBalanceIsLessThanTheValueOfTransfer() {
+
+        var request = fileUtils.readFile("/transaction/post_createtransactionforwalletwithnobalance_400.json");
+        var responseFile = fileUtils.readFile("/transaction/post_createtransactionwalletwithnobalance_400.json");
+
+        var response = RestAssured.given()
+                .contentType(ContentType.JSON).accept(ContentType.JSON)
+                .body(request)
+                .when()
+                .post(URL)
+                .then()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .log().all()
+                .extract().response().asString();
+
+        JsonAssertions.assertThatJson(response)
+                .whenIgnoringPaths("timestamp")
+                .isEqualTo(responseFile);
+
+    }
+
+    @Test
+    @Order(5)
+    @Sql(value = "/sql/initthreewallets.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "/sql/dropdata.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @DisplayName("POST v1/transfer Should return Bad request when walletType is shopkeeper")
+    void createTransaction_ShouldReturnBadRequest_WhenWalletTypeIsShopkeeper() {
+
+        var request = fileUtils.readFile("/transaction/post_createtransactionwithpayershopkeep_400.json");
+        var responseFile = fileUtils.readFile("/transaction/post_createtransactionwithpayershopkeeper_400.json");
+
+        var response = RestAssured.given()
+                .contentType(ContentType.JSON).accept(ContentType.JSON)
+                .body(request)
+                .when()
+                .post(URL)
+                .then()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .log().all()
+                .extract().response().asString();
+
+        JsonAssertions.assertThatJson(response)
+                .whenIgnoringPaths("timestamp")
+                .isEqualTo(responseFile);
+
+    }
+
+    // Faltou testar a exceção de saldo, e a exceção do tipo da quarteira
 }
