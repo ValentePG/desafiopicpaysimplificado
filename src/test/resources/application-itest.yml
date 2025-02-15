@@ -18,4 +18,4 @@ spring:
 web:
   authorization-uri: /v2/authorize
   notify-uri: /v1/notify
-  url: https://util.devi.tools/api
+  url: http://localhost:${wiremock.server.port}/api
