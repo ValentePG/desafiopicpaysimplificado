@@ -2,6 +2,7 @@ package dev.valente.picpaysimplificado.service;
 
 import dev.valente.picpaysimplificado.config.WebProperties;
 import dev.valente.picpaysimplificado.domain.Transaction;
+import dev.valente.picpaysimplificado.exception.UnnavailableServiceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -26,7 +27,7 @@ public class NotifyConsumer {
                 .retrieve()
                 .onStatus(HttpStatusCode::is5xxServerError, (httpRequest, httpResponse) -> {
                     String responseJson = new String(httpResponse.getBody().readAllBytes());
-                    throw new RuntimeException(responseJson);
+                    throw new UnnavailableServiceException(responseJson);
                 })
                 .toEntity(String.class);
 
