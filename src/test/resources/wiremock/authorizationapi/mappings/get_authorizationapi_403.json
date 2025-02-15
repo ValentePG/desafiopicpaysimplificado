@@ -1,0 +1,14 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/api/v2/authorize"
+  },
+
+  "response": {
+    "status": 403,
+    "bodyFileName": "get_notauthorizedtransactionapi_403.json",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

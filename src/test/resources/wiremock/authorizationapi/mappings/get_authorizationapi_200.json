@@ -1,0 +1,14 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/api/v2/authorize"
+  },
+
+  "response": {
+    "status": 200,
+    "bodyFileName": "get_authorizedtransactionapi_200.json",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}
