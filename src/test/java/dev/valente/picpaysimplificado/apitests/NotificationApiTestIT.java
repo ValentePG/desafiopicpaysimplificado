@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import dev.valente.picpaysimplificado.config.RestAssuredConfig;
 import dev.valente.picpaysimplificado.config.TestContainers;
 import dev.valente.picpaysimplificado.domain.Transaction;
+import dev.valente.picpaysimplificado.service.NotifyClient;
 import dev.valente.picpaysimplificado.service.NotifyConsumer;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
@@ -14,6 +15,7 @@ import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static dev.valente.picpaysimplificado.utils.TransactionUtils.AFTER_TRANSACTION_SUCCESS;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = RestAssuredConfig.class)
 @AutoConfigureWireMock(port = 0, files = "classpath:wiremock/notificationapi")
@@ -37,7 +39,7 @@ public class NotificationApiTestIT extends TestContainers {
                         .withHeader("Content-Type", "application/json")
                 ));
 
-        notifyConsumer.receive(BDDMockito.any(Transaction.class));
+        notifyConsumer.receive(AFTER_TRANSACTION_SUCCESS);
 
     }
 
