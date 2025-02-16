@@ -228,5 +228,4 @@ class TransactionControllerTestIT extends TestContainers {
 
     }
 
-    // Faltou testar a exceção de saldo, e a exceção do tipo da quarteira
 }
