@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: picpaysimplificado
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/picpaysimplificado?createDatabaseIfNotExist=true}
+    password: ${DATA_BASE_PASSWORD:3222}
+    username: ${DATA_BASE_USERNAME:postgres}
+  rabbitmq:
+    host: localhost
+    port: ${RABBITPORT:5672}
+    username: ${RABBITUSERNAME:user}
+    password: ${RABBITPASSWORD:3032}
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 1000ms
+          multiplier: 2
+          max-attempts: 5
+          max-interval: 10000ms
+        concurrency: 3
+        max-concurrency: 10
+  threads:
+    virtual:
+      enabled: true
+server:
+  error:
+    include-stacktrace: never
+  port: ${APPLICATIONPORT:8080}
+
+web:
+  authorization-uri: ${AUTHURI:/v2/authorize}
+  notify-uri: ${NOTIFYURI:/v1/notify}
+  url: ${APIURL:https://util.devi.tools/api}

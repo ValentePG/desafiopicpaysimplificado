@@ -35,5 +35,5 @@ build/
 /.env.prod
 /src/main/resources/application-prod.yml
 /src/main/resources/static/rapido.sql
-/src/main/java/dev/valente/picpaysimplificado/commandlinerunner/TestLineRunner.java
+/src/test/java/dev/valente/picpaysimplificado/commandlinerunner/TestLineRunner.java
 

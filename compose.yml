@@ -1,6 +1,6 @@
 services:
   picpaysimplificado:
-    image: valentedev/picpaysimplificado:0.0.2-SNAPSHOT
+    image: valentedev/picpaysimplificado:0.0.1-SNAPSHOT
     container_name: application
     env_file:
       - .env
