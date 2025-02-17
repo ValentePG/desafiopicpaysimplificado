@@ -2,6 +2,7 @@ package dev.valente.picpaysimplificado.concurrency;
 
 import dev.valente.picpaysimplificado.config.TestContainers;
 import dev.valente.picpaysimplificado.domain.Transaction;
+import dev.valente.picpaysimplificado.exception.InconsistencyException;
 import dev.valente.picpaysimplificado.repository.WalletRepository;
 import dev.valente.picpaysimplificado.service.AuthorizationService;
 import dev.valente.picpaysimplificado.service.NotifyClient;
@@ -18,6 +19,7 @@ import org.springframework.test.context.jdbc.Sql;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Function;
@@ -40,8 +42,11 @@ public class OptimisticLockingTestIT extends TestContainers {
     @Test
     @Sql(value = "/sql/initthreewallets.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(value = "/sql/dropdata.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    @DisplayName("")
-    void testOptimisticLocking() throws Exception {
+    @DisplayName("Should return one thread with InconsistencyException when trying to access the same resource")
+    void testOptimisticLocking_ShouldReturnOneThreadWithInconsistencyException_WhenTryingToAccessTheSameResource() {
+        BDDMockito.doNothing().when(authorizationService).getAuthorization();
+        BDDMockito.doNothing().when(notifyClient).pushNotification();
+
         ExecutorService executorService = Executors.newFixedThreadPool(2);
 
         Transaction transaction = Transaction.builder()
@@ -55,8 +60,7 @@ public class OptimisticLockingTestIT extends TestContainers {
                 .amount(BigDecimal.valueOf(50.00)).build();
 
         Function<Throwable, Transaction> handleTransactionError = throwable -> {
-            System.err.println("Erro na transação " + throwable.getCause().getMessage());
-            return null;
+            throw new InconsistencyException("Erro de inconsistência na transação");
         };
 
         CompletableFuture<Transaction> completableFuture = CompletableFuture.supplyAsync(
@@ -69,25 +73,31 @@ public class OptimisticLockingTestIT extends TestContainers {
                         executorService)
                 .exceptionally(handleTransactionError);
 
-        BDDMockito.doNothing().when(authorizationService).getAuthorization();
-        BDDMockito.doNothing().when(notifyClient).pushNotification();
-
-        CompletableFuture.allOf(completableFuture, completablefuture2).join();
+        Assertions.assertThatException()
+                .isThrownBy(() -> CompletableFuture.allOf(completableFuture, completablefuture2).join())
+                .isInstanceOf(CompletionException.class)
+                .withCauseInstanceOf(InconsistencyException.class);
 
         executorService.shutdown();
 
-        var walletVersionTest = walletRepository.getWallet(transaction.getPayerWalletId());
-
         List<CompletableFuture<Transaction>> completableFutureList = List.of(completableFuture, completablefuture2);
 
-        var nullList = completableFutureList.stream().filter(c -> c.join() == null)
+        var futureExceptionallyCompleted = completableFutureList.stream()
+                .filter(CompletableFuture::isCompletedExceptionally)
                 .toList();
 
-        var completedList = completableFutureList.stream().filter(c -> c.join() != null)
+        var futureNotExceptionallyCompleted = completableFutureList.stream()
+                .filter(c -> !c.isCompletedExceptionally())
                 .toList();
 
-        Assertions.assertThat(nullList).hasSize(1);
-        Assertions.assertThat(completedList).hasSize(1);
+        Assertions.assertThat(futureExceptionallyCompleted).hasSize(1);
+        Assertions.assertThat(futureNotExceptionallyCompleted).hasSize(1);
+
+        Assertions.assertThat(futureExceptionallyCompleted.getFirst().exceptionNow())
+                .isInstanceOf(InconsistencyException.class)
+                .hasMessage("400 BAD_REQUEST \"Erro de inconsistência na transação\"");
+
+        var walletVersionTest = walletRepository.getWallet(transaction.getPayerWalletId());
 
         Assertions.assertThat(walletVersionTest)
                 .get()
