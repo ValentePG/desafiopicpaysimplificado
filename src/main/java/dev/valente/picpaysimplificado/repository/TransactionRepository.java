@@ -25,13 +25,6 @@ public class TransactionRepository {
                 .single();
     }
 
-    public Transaction getTransaction(long transaction) {
-        return jdbcClient.sql("SELECT * FROM tbl_transaction WHERE id = ?")
-                .param(transaction)
-                .query(Transaction.class)
-                .single();
-    }
-
     public List<Transaction> getAllTransactions() {
         return jdbcClient.sql("SELECT * FROM tbl_transaction")
                 .query(Transaction.class)

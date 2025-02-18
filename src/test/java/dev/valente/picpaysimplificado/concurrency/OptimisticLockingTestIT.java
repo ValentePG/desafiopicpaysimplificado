@@ -17,6 +17,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -103,7 +104,7 @@ public class OptimisticLockingTestIT extends TestContainers {
                 .get()
                 .hasFieldOrPropertyWithValue("version", 1)
                 .hasFieldOrPropertyWithValue("balance",
-                        BigDecimal.valueOf(100.0).setScale(2, BigDecimal.ROUND_HALF_UP));
+                        BigDecimal.valueOf(100.0).setScale(2, RoundingMode.HALF_UP));
 
     }
 }

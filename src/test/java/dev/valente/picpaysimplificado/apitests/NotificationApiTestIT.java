@@ -4,7 +4,6 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import dev.valente.picpaysimplificado.config.RestAssuredConfig;
 import dev.valente.picpaysimplificado.config.TestContainers;
 import dev.valente.picpaysimplificado.domain.Transaction;
-import dev.valente.picpaysimplificado.service.NotifyClient;
 import dev.valente.picpaysimplificado.service.NotifyConsumer;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;

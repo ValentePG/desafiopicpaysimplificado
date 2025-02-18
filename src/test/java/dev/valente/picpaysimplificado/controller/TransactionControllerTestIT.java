@@ -3,7 +3,6 @@ package dev.valente.picpaysimplificado.controller;
 import dev.valente.picpaysimplificado.config.RestAssuredConfig;
 import dev.valente.picpaysimplificado.config.TestContainers;
 import dev.valente.picpaysimplificado.domain.Transaction;
-import dev.valente.picpaysimplificado.exception.InsufficientBalanceException;
 import dev.valente.picpaysimplificado.exception.NotAuthorizedException;
 import dev.valente.picpaysimplificado.repository.TransactionRepository;
 import dev.valente.picpaysimplificado.service.AuthorizationService;
