@@ -99,6 +99,4 @@ Content-Type: application/json
 
 
 # 📄 Licença
-
-<hr>
 Este projeto está sob a licença MIT - veja o arquivo LICENSE para mais detalhes.
