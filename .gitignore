@@ -31,9 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
-/.env
+/compose.yml
 /.env.prod
 /src/main/resources/application-prod.yml
-/src/main/resources/static/rapido.sql
-/src/test/java/dev/valente/picpaysimplificado/commandlinerunner/TestLineRunner.java
-
