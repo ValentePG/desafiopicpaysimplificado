@@ -14,3 +14,6 @@ Descrição completa do projeto [aqui](https://github.com/PicPay/picpay-desafio-
 
 <img src="/design/picpaysimplificado.png" alt="diagrama de classes">
 
+# ER Diagram
+
+<img src="/design/erdiagram.png" alt="ER diagram">
