@@ -1,3 +1,6 @@
 spring:
   profiles:
     active: ${PROFILE_ACTIVE:dev}
+  devtools:
+    livereload:
+      enabled: false
