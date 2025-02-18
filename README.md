@@ -1,11 +1,9 @@
 # 📌 Desafio picpay simplificado
-<hr>
 
 - Descrição completa do projeto [aqui](https://github.com/PicPay/picpay-desafio-backend)
 - Diagramas do projeto [aqui](/design/Diagramas.md)
 
 # Descrição
-<hr>
 
 Basicamente o desafio proposto é desenvolver o fluxo de uma aplicação que faz transações entre carteiras, existem 2 tipos de carteiras, a comum e a dos lojistas, sendo que a dos lojistas só é possível receber transações.
 
@@ -28,12 +26,10 @@ Content-Type: application/json
 - Sendo value o valor da transação, payer sendo o id da carteira do pagador da transação, e payee sendo o id da carteira do recebedor da transação.
 
 # 📦 Pré-requisitos
-<hr>
 
 - Ter docker instalado na máquina
 
 # 🚀 Passo a passo para rodar o projeto
-<hr>
 
 1️⃣ Clonar o repositório
 
@@ -90,7 +86,6 @@ Content-Type: application/json
 
 
 # 🛠️ Tecnologias Utilizadas
-<hr>
 
 - Java 21
 
