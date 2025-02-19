@@ -2,88 +2,122 @@
 
 - Descrição completa do projeto [aqui](https://github.com/PicPay/picpay-desafio-backend)
 - Diagramas do projeto [aqui](/design/Diagramas.md)
-
-# Descrição
-
+  
 Basicamente o desafio proposto é desenvolver o fluxo de uma aplicação que faz transações entre carteiras, existem 2 tipos de carteiras, a comum e a dos lojistas, sendo que a dos lojistas só é possível receber transações.
 
 - **Atenção:** O sistema ja inicia com 3 carteiras, a carteira 1 do tipo comum, a carteira 2 do tipo lojista e a carteira 3 do tipo comum.
 
 - O sistema possui um endpoint:
-``POST /v1/transfer``
+
+      POST /v1/transfer
+  
 - Que aceita apenas Json neste formato:
 
-```
-POST /v1/transfer
-Content-Type: application/json
-
-{
-  "value": 100.0,
-  "payer": 1,
-  "payee": 3
-}
-```
+      POST /v1/transfer
+      Content-Type: application/json
+      
+      {
+        "value": 100.0,
+        "payer": 1,
+        "payee": 3
+      }
+  
 - Sendo value o valor da transação, payer sendo o id da carteira do pagador da transação, e payee sendo o id da carteira do recebedor da transação.
 
 # 📦 Pré-requisitos
 
-- Ter docker instalado na máquina
+Antes de começar, certifique-se de ter os seguintes requisitos instalados na sua máquina:
+
+- [Docker](https://www.docker.com/get-started) (versão recomendada: `27.5.1`)
+- (Opcional) [Java 21](https://www.oracle.com/java/technologies/downloads/#java21) e [Maven 3.9.9](https://maven.apache.org/download.cgi) para rodar sem Docker
+- (Opcional) PostgreSQL 16
+- (Opcional) RabbitMQ 4
 
 # 🚀 Passo a passo para rodar o projeto
 
 1️⃣ Clonar o repositório
 
-`git clone https://github.com/ValentePG/desafiopicpaysimplificado.git`
-
-`cd desafiopicpaysimplificado`
-
+    git clone https://github.com/ValentePG/desafiopicpaysimplificado.git
+    cd desafiopicpaysimplificado
+    
 2️⃣ Instalar dependências
 
-`./mvnw clean install # Linux`
+- Linux/MacOs
 
-`mvnw.cmd clean install # Windows`
+      ./mvnw clean install
+    
+- Windows
+    
+      mvnw.cmd clean install
+  
+💡 Caso tenha Maven instalado globalmente, você pode rodar:
 
+     mvn clean install
+     
 3️⃣ Rodar a aplicação
 
-- **Primeira maneira**
-  - Você pode rodar a aplicação diretamente sem docker, porém você ainda vai precisar da imagem do PostgreSQL e RabbitMQ ou ambos estarem instalados na máquina rodando na mesma porta 
-  - Alterar o arquivo `application-dev.yml` 
-  - Alterar a url do postgreSQL para localhost `jdbc:postgresql://localhost:5432/picpaysimplificado?createDatabaseIfNotExist=true`
-  - Alterar o campo `host` do rabbitmq para `localhost`
-  - Após isto você pode executar o programa normalmente com:
+Você pode rodar o projeto de duas formas:
 
-  - `./mvnw spring-boot:run # Linux`
+- Método 1: Rodando sem Docker (Configuração Manual)
+  - Se optar por rodar sem Docker, você precisa ter um banco de dados `PostgreSQL` e uma instância do `RabbitMQ` rodando localmente.
+  - Além disso, será necessário editar a configuração no arquivo `application-dev.yml` para apontar para o banco de dados local:
+  
+        spring:
+          datasource:
+            url: jdbc:postgresql://localhost:5432/picpaysimplificado?createDatabaseIfNotExist=true
+    
+- Alterar o host do RabbitMQ para localhost:
 
-  - `mvnw.cmd spring-boot:run # Windows`
+  
+      rabbitmq:
+        host: localhost
+  
+- Executar o projeto:
+  - Linux/MacOs
+  
+        ./mvnw spring-boot:run
+    
+  - Windows
+  
+        mvnw.cmd spring-boot:run
 
+- Método 2: Rodando com Docker (Recomendado)
+Caso tenha o Docker instalado, basta rodar um único comando, e tudo será iniciado automaticamente:
 
-- **Segunda maneira**
-    - Com o docker instalado apenas rode o comando abaixo:
-    - `docker compose -f compose-dev.yml up`
+      docker compose -f compose-dev.yml up
 
 4️⃣ Acessando a API
 
-- API:`http://localhost:8080/transfer`
-- Swagger:`http://localhost:8080/swagger-ui.html`
+Após iniciar o projeto, os endpoints da API estarão disponíveis nos seguintes links:
+
+- API:
+
+      http://localhost:8080/transfer
+
+- Swagger:
+
+      http://localhost:8080/swagger-ui.html
 
 5️⃣ Rodar os testes (opcional)
 
-**Lembrando que os testes de integração fazem uso da tecnologia testContainers, que utiliza docker, então certifique-se de estar com o docker engine em execução.**
+⚠️ IMPORTANTE: Os testes de integração utilizam Testcontainers, então é necessário que o Docker esteja rodando antes de executá-los.
 
 - **Para rodar os testes unitários**
 
-`./mvnw test`
+      ./mvnw test
 
 - **Para rodar os testes de integração**
 
-`./mvnw verify -P integration-test`
+      ./mvnw verify -P integration-test
 
-- **Para rodar os 2 juntos**
+- **Para rodar ambos**
+  - Linux/MacOS
 
-`./mvnw test; ./mvnw verify -P integration-test # Para windows`
+        ./mvnw test && ./mvnw verify -P integration-test
 
-`./mvnw test && ./mvnw verify -P integration-test # Para linux` 
+  - Windows
 
+        ./mvnw test; ./mvnw verify -P integration-test
 
 # 🛠️ Tecnologias Utilizadas
 
@@ -91,11 +125,11 @@ Content-Type: application/json
 
 - Spring Boot 3.4.2
 
-- Docker
+- Docker 27.5.1
 
-- RabbitMQ
+- RabbitMQ (imagem: rabbitmq:4-management)
 
-- PostgreSQL
+- PostgreSQL (imagem: postgres:16)
 
 
 # 📄 Licença
