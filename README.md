@@ -28,11 +28,15 @@ Basicamente o desafio proposto é desenvolver o fluxo de uma aplicação que faz
 
 Antes de começar, certifique-se de ter os seguintes requisitos instalados na sua máquina:
 
-- [Docker](https://www.docker.com/get-started) (versão recomendada: `27.5.1`)
-- (Opcional) [Java 21](https://www.oracle.com/java/technologies/downloads/#java21) e [Maven 3.9.9](https://maven.apache.org/download.cgi) para rodar sem Docker
-- (Opcional) PostgreSQL 16
-- (Opcional) RabbitMQ 4
 
+- [Docker](https://www.docker.com/get-started) (versão recomendada: `27.5.1`)
+  
+- (Opcional) [Java 21](https://www.oracle.com/java/technologies/downloads/#java21) e [Maven 3.9.9](https://maven.apache.org/download.cgi) para rodar sem Docker
+  
+- (Opcional) PostgreSQL 16
+  
+- (Opcional) RabbitMQ 4
+  
 # 🚀 Passo a passo para rodar o projeto
 
 1️⃣ Clonar o repositório
